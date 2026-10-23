@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FAQ — bug hunt</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 40rem; margin: 2rem auto; padding: 0 1rem; }
+    button { font: inherit; padding: 0.6rem 1rem; }
+  </style>
+</head>
+<body>
+  <h1>Frequently asked questions</h1>
+
+  <button id="faq-button" type="button">Do I need to book a flat tyre repair?</button>
+  <p id="faq-answer" hidden>No. Bring your bike before 11:00 and it is ready the same day.</p>
+
+  <script>
+    const button = document.getElementById("faq-button");
+    const answer = document.getElementById("faq-anwser");
+
+    button.addEventListener("click", () => {
+      answer.hidden = !answer.hidden;
+    });
+  </script>
+</body>
+</html>
