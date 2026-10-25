@@ -5,3 +5,6 @@ venv/
 __pycache__/
 *.pyc
 .DS_Store
+
+# Local test runs
+test/

@@ -140,36 +140,56 @@ short prompt:
 Create a file `first-try.html`, paste the code from the answer, save it and
 open it in the browser.
 
-**3.** Look at the result carefully:
+**3.** The result probably looks surprisingly good. Look closer:
 
-1. What does the page contain that you never told the AI?
-2. Does anything on the page not work or not load?
-3. Could you put this page online for a real shop?
+1. What does the page contain that you never told the AI? Make a list of
+   every fact: name, address, numbers, ratings, opening hours.
+2. Make the browser window as narrow as a phone. Can you still reach every
+   part of the navigation?
+3. Where do the photos come from? Search the code (`Cmd + F` / `Ctrl + F`
+   in VS Code) for `https://`.
+4. Could you put this page online for a real shop?
 
 <details>
 <summary>Solution</summary>
 
-**1. Invented content.** The AI fills every gap with something plausible: a
-shop name, an address, a phone number, prices, opening hours, often
-"customer reviews" with names and stars, sometimes "20 years of experience".
-None of it is true. This is the same effect as a **hallucination**: the
-model produces text that *sounds* right, with no idea whether it *is* right.
+Today's chatbots usually deliver a polished page that works at first
+glance: clean layout, matching colours, working photos. That is exactly what
+makes the problems easy to miss.
 
-**2. Things that break.** Typical problems:
-- Images point to addresses that do not exist, or to photos the AI only
-  guessed, so you see broken image icons.
-- Buttons and contact forms do nothing. A form needs a server that receives
-  the data, and a single HTML file does not have one.
-- Links such as "Privacy Policy" lead nowhere (`href="#"`).
+**1. Invented content.** The AI fills every gap with something plausible. In
+one test run, the page contained a shop name, an address in Portland, a
+phone number, an email address on a domain that may well belong to someone
+else, opening hours, "12k+ bikes serviced", a "4.9/5 average rating" and
+"certified mechanics". None of it is true. This is the same effect as a
+**hallucination**: the model produces text that *sounds* right, with no
+idea whether it *is* right. Numbers and ratings are the most dangerous
+inventions because they look like facts.
 
-**3. Not without checking every line.** Invented reviews are not just
-embarrassing: in Germany and the EU, fake reviews are an unfair commercial
-practice and can be expensive. Invented prices or opening hours annoy
-customers.
+**2. Hidden weaknesses.** Typical findings when you look more closely:
+- Below a certain width the navigation simply disappears, with no menu
+  button to replace it.
+- White text on a bright orange or amber button: looks fine, but the
+  contrast is often too low to read comfortably (Task 4).
+- Icons made of emoji, or `<label>` used for things that are not form
+  fields: small things that confuse screen readers (Task 7).
+
+**3. Photos from someone else's server.** The images are usually loaded
+directly from a stock photo site such as Unsplash. They show *some* bike
+shop, not this one, and every visit to your page also sends the visitor's
+IP address to that server (Task 8). Sometimes the address is invented and
+the image does not load at all.
+
+**4. Not without checking every line.** Invented ratings and customer
+numbers are not just embarrassing: in Germany and the EU, fake reviews and
+misleading claims are an unfair commercial practice and can be expensive.
+Invented prices or opening hours annoy customers.
 
 **Key points:**
 - `hello.html` *is* a web page. Everything the AI produces is the same kind
   of file, just longer.
+- "Looks professional" and "is correct" are two different things. The AI is
+  very good at the first and has no way of knowing the second.
 - A short prompt gives the AI freedom, and it fills that freedom with
   guesses. The next task shows how to take that freedom away.
 - Your result looks different from your neighbour's, even with the same
@@ -181,7 +201,13 @@ customers.
 
 ## Task 2 — A Prompt That Works: Your Reusable Template
 
-A good web design prompt answers the questions a human designer would ask in
+**Your first customer.** Mara Lenz runs **Kurbelwerk**, a small bicycle
+repair workshop in the (invented) town of Musterstadt. She would like a
+simple website and has sent you a short *business brief*: everything about
+her shop that should be on the page, such as services, prices, opening hours
+and contact details. From now on, every task works on this website.
+
+This time you do not leave the AI any room for guessing. A good web design prompt answers the questions a human designer would ask in
 a first meeting:
 
 | Part | Question it answers |
@@ -196,8 +222,8 @@ a first meeting:
 | **Technical rules** | Which file format, which limits? |
 | **Output** | What exactly should the answer contain? |
 
-**1.** Create a file `business_brief.md` with the content below. It
-describes an invented bike workshop. This is your "real" customer content.
+**1.** Create a file `business_brief.md` with the content below. This is
+Mara's brief: the only source of facts for her website.
 
 <details>
 <summary>business_brief.md: content to copy</summary>
@@ -288,7 +314,7 @@ business] in [town].
 **Audience:** [who visits the page and what they want to find quickly]
 
 **Main action:** The most important thing a visitor should do is
-[e.g. call or email to book a repair].
+[one action, e.g. for a bakery: order a birthday cake].
 
 **Content:** Use ONLY the facts from the business brief below. Do not invent
 names, prices, opening hours, reviews, awards or photos. If something is
@@ -297,12 +323,11 @@ missing, write a visible placeholder like `[TODO: photo of the workshop]`.
 **Sections, in this order:**
 1. Header with the business name and a navigation menu
 2. Hero: one headline, one sentence, one button for the main action
-3. [Services and prices]
-4. [What makes us different]
-5. [Opening hours and contact]
-6. Footer with a link to the legal notice (Impressum)
+3. [the sections your visitors need, one per line, in the order they
+   look for them]
+4. Footer with a link to the legal notice (Impressum)
 
-**Look and feel:** [three adjectives, e.g. friendly, calm, practical].
+**Look and feel:** [three adjectives, e.g. for a bakery: warm, traditional, cosy].
 Colours: [your colours, or "suggest a palette with good contrast"].
 
 **Technical rules:**
@@ -326,9 +351,26 @@ Colours: [your colours, or "suggest a palette with good contrast"].
 
 </details>
 
-**3.** Fill in the square brackets for Kurbelwerk, paste the whole brief at
-the end, and send it to your chatbot **in a new chat**. Save the answer as
-`index.html` and open it.
+**3.** Turn the template into a prompt for Mara's website. The template is
+a fill-in-the-blanks text:
+
+1. Copy everything in `prompt_template.md` **below** the line `---`. The
+   lines above it are only instructions for you.
+2. Replace every part in `[square brackets]` with information about
+   Kurbelwerk. You find it in the business brief. For the sections, decide
+   yourself: what does someone visiting a bike workshop's website want to
+   find, and in which order? Only plan sections the brief has content for.
+3. Replace the last line, `[paste the business brief here]`, with the
+   **whole** content of `business_brief.md`.
+4. Leave `[TODO: photo of the workshop]` in the *Content* rule as it is.
+   It is not a gap for you, but an example that shows the AI how to mark
+   missing content.
+5. Start a **new chat** in your chatbot, paste the complete text, and send
+   it as one message. A new chat matters: otherwise the chatbot still sees
+   your one-sentence prompt from Task 1 and mixes the two.
+6. The answer should be one code block. Copy it (most chatbots show a
+   *Copy* button on the block), create a file `index.html` in `vibe-site`,
+   paste the code, save, and open the file in the browser.
 
 **4.** Compare with `first-try.html` from Task 1:
 
@@ -339,6 +381,27 @@ the end, and send it to your chatbot **in a new chat**. Save the answer as
 
 <details>
 <summary>Solution</summary>
+
+**Check your filled-in prompt first.** There is no single right wording,
+but these decisions should match the brief:
+- **Audience:** not just "everyone", but who visits and *what they look
+  for*. Commuters with a broken bike want prices, hours and a phone number,
+  not a company history.
+- **Main action:** the brief says there is *no online booking*. A main
+  action like "book online" would make the AI build a booking form that
+  cannot work.
+- **Sections:** the brief has content for services and prices, what makes
+  the workshop different, and opening hours with contact details. Visitors
+  with a broken bike usually look for prices first and contact last, or the
+  other way round if they are in a hurry. Both orders can be argued. A
+  "Reviews", "Our team" or "Shop" section cannot: the brief has nothing for
+  them, so the AI would have to invent the content.
+- **Look and feel:** adjectives that fit the tone described in the brief.
+  "Luxurious" or "edgy" would not.
+
+If one of these did not fit, change it in your prompt and try again in a new
+chat. Comparing the two results is the fastest way to see how much each line
+matters.
 
 1. The **Content** rule: *"Use ONLY the facts from the business brief …
    If something is missing, write a visible placeholder."* The brief even
@@ -860,9 +923,13 @@ python3 site_check.py first-try.html
 <details>
 <summary>Solution</summary>
 
-- `first-try.html` from Task 1 usually collects many more `FIX` lines than
-  your templated `index.html`. That is the effect of Task 2's rules, in
-  numbers.
+- `first-try.html` from Task 1 often passes almost every check, although
+  half of its content is invented. The script, like Lighthouse, can check
+  *structure*, but not whether "4.9/5 average rating" is true. That part
+  stays your job.
+- If the contrast checks say `SKIP`, the AI used other token names (e.g.
+  `--ink` instead of `--color-text`). The line `Colour tokens found:` lists
+  them. Put those names into `CONTRAST_PAIRS`.
 - **1.** Amber on white is about 2:1, far too low for text. It does not
   matter as long as amber is only used as a background *behind dark text*
   or as a decorative line, as in the reference solution. Contrast is always

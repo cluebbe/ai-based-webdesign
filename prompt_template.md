@@ -14,7 +14,7 @@ business] in [town].
 **Audience:** [who visits the page and what they want to find quickly]
 
 **Main action:** The most important thing a visitor should do is
-[e.g. call or email to book a repair].
+[one action, e.g. for a bakery: order a birthday cake].
 
 **Content:** Use ONLY the facts from the business brief below. Do not invent
 names, prices, opening hours, reviews, awards or photos. If something is
@@ -23,12 +23,11 @@ missing, write a visible placeholder like `[TODO: photo of the workshop]`.
 **Sections, in this order:**
 1. Header with the business name and a navigation menu
 2. Hero: one headline, one sentence, one button for the main action
-3. [Services and prices]
-4. [What makes us different]
-5. [Opening hours and contact]
-6. Footer with a link to the legal notice (Impressum)
+3. [the sections your visitors need, one per line, in the order they
+   look for them]
+4. Footer with a link to the legal notice (Impressum)
 
-**Look and feel:** [three adjectives, e.g. friendly, calm, practical].
+**Look and feel:** [three adjectives, e.g. for a bakery: warm, traditional, cosy].
 Colours: [your colours, or "suggest a palette with good contrast"].
 
 **Technical rules:**
