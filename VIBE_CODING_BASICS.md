@@ -739,12 +739,19 @@ is any text cut off? How much of the screen does the header take up?
 phone (e.g. *iPhone SE*) and click the **rotate** icon. Scroll down. How much
 room is left for the content?
 
-**5.** If something scrolls sideways, find the culprit: paste this into
-the **Console** and press Enter. It lists all elements wider than the
-screen:
+**5.** Check with the **Console** whether the page is wider than the
+screen. Paste this and press Enter:
 
 ```js
-[...document.querySelectorAll("body *")].filter(el => el.getBoundingClientRect().right > document.documentElement.clientWidth + 1)
+document.documentElement.scrollWidth > document.documentElement.clientWidth
+```
+
+`false` means nothing sticks out. `true` means the page scrolls sideways.
+Then find the culprit with this line. It lists every element that is wider
+than the screen, or whose content spills over its own edge:
+
+```js
+[...document.querySelectorAll("body *")].filter(el => el.getBoundingClientRect().right > document.documentElement.clientWidth + 1 || el.scrollWidth > el.clientWidth + 1)
 ```
 
 **6.** Pick one problem, describe it to the chatbot *precisely*, and let it
@@ -770,6 +777,14 @@ of the screen, and boxes with a fixed height that cut off their text.
 
 **4.** A phone held sideways is only about 320 – 400 px high. A sticky header
 plus the browser's own bars can leave just a narrow strip for the content.
+
+**5.** With the long word from step 2, the second line lists the `h1`,
+together with the elements around it, such as `main` and `section`. The
+spilling content makes them too wide as well. The last element in the list
+is usually the culprit. The check for spilling content matters here: the
+word sticks out of the `h1`, but the `h1` box itself keeps its width. Edits in the *Elements* panel are
+lost when the page reloads, so if both lines find nothing, check that the
+long word is still there.
 
 Precise prompts for these problems:
 
