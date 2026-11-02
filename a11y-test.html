@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kurbelwerk — accessibility test page</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 40rem; margin: 2rem auto; padding: 0 1rem; color: #1c2321; }
+    .note { color: #9aa5a1; }
+    a { color: #1f6f5c; }
+    .button { display: inline-block; padding: 0.7rem 1.4rem; border-radius: 0.75rem; background: #1f6f5c; color: #ffffff; cursor: pointer; }
+    :focus-visible { outline: none; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="#services">Services</a> ·
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <main>
+    <h1>Kurbelwerk Bike Workshop</h1>
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 80'%3E%3Ccircle cx='40' cy='50' r='25' fill='none' stroke='%231f6f5c' stroke-width='6'/%3E%3Ccircle cx='160' cy='50' r='25' fill='none' stroke='%231f6f5c' stroke-width='6'/%3E%3Cpath d='M40 50 L80 15 L130 15 L160 50' fill='none' stroke='%231f6f5c' stroke-width='6'/%3E%3C/svg%3E" width="200" height="80">
+    <p>Honest repairs in Musterstadt, and flat tyres fixed the same day.</p>
+    <div class="button" onclick="location.href='tel:+491234567890'">Call to book a repair</div>
+
+    <h2 id="services">Services</h2>
+    <p>Safety check € 39 · Full service € 89 · Flat tyre repair € 15 plus tube</p>
+    <p class="note">All prices include VAT.</p>
+
+    <h2 id="contact">Contact</h2>
+    <p>Mühlgasse 7, 12345 Musterstadt · <a href="mailto:hallo@kurbelwerk.example">hallo@kurbelwerk.example</a></p>
+  </main>
+</body>
+</html>

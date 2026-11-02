@@ -18,7 +18,8 @@ automatic checker in Python and AI inside the code editor.
 
 **Requirements:** a free account with an AI chatbot (ChatGPT, Claude, Gemini
 or Microsoft Copilot), Google Chrome or Microsoft Edge,
-[Visual Studio Code](https://code.visualstudio.com) and a free
+[Visual Studio Code](https://code.visualstudio.com) with the Live Server
+extension, and a free
 [GitHub](https://github.com) account. Python 3.9+ is only needed for the
 optional part.
 
@@ -42,6 +43,7 @@ the solution to compare.
 [prompt_template.md](prompt_template.md) (Task 2) ·
 [site/index.html](site/index.html) (a finished example result, Tasks 2–8) ·
 [bug.html](bug.html) (Task 5) ·
+[a11y-test.html](a11y-test.html) (Task 7) ·
 [site_check.py](site_check.py) (optional part, downloaded from GitHub)
 
 | Time | Part |
@@ -52,7 +54,7 @@ the solution to compare.
 | 0:30 – 0:40 | Reading the code the AI wrote, first steps in DevTools |
 | 0:40 – 0:50 | Design basics: hierarchy, type, colour, contrast and design tokens |
 | 0:50 – 1:00 | Small steps and good bug reports |
-| 1:00 – 1:10 | Mobile first and responsive design |
+| 1:00 – 1:10 | Responsive design: stress tests with long words, zoom and a phone held sideways |
 | 1:10 – 1:20 | Accessibility and the Lighthouse audit |
 | 1:20 – 1:30 | Going live on GitHub Pages and the pre-flight checklist |
 | Optional | An automatic check in Python, AI inside the editor |

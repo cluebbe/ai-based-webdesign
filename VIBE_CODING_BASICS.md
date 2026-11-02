@@ -72,7 +72,9 @@ the *Lighthouse* audit used in Tasks 3, 6 and 7.
 **3. A text editor for code.** Word processors such as Word or TextEdit add
 hidden formatting and break HTML files. Install the free
 [Visual Studio Code](https://code.visualstudio.com). The instructions
-assume it.
+assume it. Then add the **Live Server** extension, a small web server you
+need for Task 7: in VS Code, click the *Extensions* icon on the left (four
+squares), search for `Live Server` by *Ritwick Dey*, and click **Install**.
 
 **4. A GitHub account** at [github.com](https://github.com), for publishing
 your page in Task 8. Your username becomes part of your web address
@@ -556,9 +558,14 @@ are used everywhere. Send this to the chatbot, in the same chat as your page:
 > }
 > ```
 
-Save the new version over `index.html`, reload, and look at it next to the
-old version. You can also pick your own colours, but check their contrast
-first.
+**3.** Before you replace `index.html`, keep the current version so you can
+compare. In VS Code, right-click `index.html` → *Copy*, then right-click an
+empty spot in the file list → *Paste*. Rename the copy (`index copy.html`)
+to `index-v1.html` with right-click → *Rename*.
+
+Now paste the AI's new version into `index.html` and save. Open both files
+in the browser, side by side. You can also pick your own colours, but check
+their contrast first.
 
 <details>
 <summary>Solution</summary>
@@ -601,11 +608,16 @@ own message**, and check the page after each one:
 
 1. *"Add a short line under the hero headline: 'Flat tyre before 11:00?
    Ride home the same day.' Change nothing else."*
-2. *"Show the opening hours as a table."*
-3. *"Make the navigation stick to the top of the screen when scrolling."*
+2. *"In the opening hours, highlight today's day, so visitors see at once
+   whether the workshop is open today."*
+3. *"Add a 'Back to top' link at the end of the page."*
 
-Before each step, keep a copy of the working version: copy `index.html` to
-`index-v1.html`, `index-v2.html`, and so on.
+Every AI result is different. If your page already has one of these, skip
+it and think of a similar small change of your own.
+
+Before each step, keep a copy of the working version, as in Task 4:
+`index-v2.html`, `index-v3.html`, and so on. `index.html` is always the
+newest version.
 
 **Part B: a bug hunt.** Create a file `bug.html` with this content and open
 it in the browser. Click the question. Nothing happens.
@@ -699,21 +711,35 @@ What makes a page responsive:
 | `img { max-width: 100%; }` | Images never wider than the screen |
 | **Media queries**, e.g. `@media (min-width: 48rem) { … }` | Extra rules from a certain width upwards (a **breakpoint**) |
 
+AI tools know these building blocks well. At the usual sizes your page
+probably looks fine already. Real visitors are less tidy: they use other
+languages, zoom in, and turn their phones sideways. This task tests whether
+the layout survives that.
+
 **Your task:**
 
-**1.** Open `index.html` in Chrome or Edge, open DevTools and click the
-**device toolbar** icon (phone and tablet symbol), or press
-`Cmd + Shift + M` / `Ctrl + Shift + M`. Set the width to **360**, then
-**768**, then **1280** pixels.
+**1. The usual sizes.** Open `index.html` in Chrome or Edge, open DevTools
+and click the **device toolbar** icon (phone and tablet symbol), or press
+`Cmd + Shift + M` / `Ctrl + Shift + M`. Set the width to **360**, **768**
+and **1280** pixels. At each width: can you still reach **every** link of
+the navigation?
 
-**2.** At each width, check:
+**2. Stress test: a long word.** Mara wants a German version of the page
+later, and German has long words. Set the width back to **360**. In the
+*Elements* panel of DevTools, find the `<h1>`, double-click its text, and
+replace it with *Willkommen in der Fahrradreparaturwerkstatt*. Press Enter.
+What happens? Can you scroll sideways now?
 
-1. Can you scroll **sideways**? (You should not be able to.)
-2. Is all text readable without zooming?
-3. Does the navigation work? On a phone, try the menu button.
-4. Are buttons and links big enough to tap with a thumb?
+**3. Stress test: zoom.** Close the device toolbar, make the browser window
+wide, and zoom in to **400 %** with `Cmd +` / `Ctrl +` (press it several
+times). People with low vision do this every day. Scroll through the page:
+is any text cut off? How much of the screen does the header take up?
 
-**3.** If you scroll sideways at 360 px, find the culprit: paste this into
+**4. Stress test: phone sideways.** Open the device toolbar again, choose a
+phone (e.g. *iPhone SE*) and click the **rotate** icon. Scroll down. How much
+room is left for the content?
+
+**5.** If something scrolls sideways, find the culprit: paste this into
 the **Console** and press Enter. It lists all elements wider than the
 screen:
 
@@ -721,25 +747,46 @@ screen:
 [...document.querySelectorAll("body *")].filter(el => el.getBoundingClientRect().right > document.documentElement.clientWidth + 1)
 ```
 
-**4.** Describe one problem to the chatbot *precisely*, and let it fix it.
+**6.** Pick one problem, describe it to the chatbot *precisely*, and let it
+fix it. Then repeat the stress test.
 
 <details>
 <summary>Solution</summary>
 
-Typical problems at 360 px and how to describe them:
+**1.** Usually fine, with one common exception: below a certain width the
+AI hides the navigation (`display: none`) and forgets the menu button, so
+phone visitors cannot reach the other sections at all.
 
-| What you see | Precise prompt |
+**2.** In tests, both an AI page and the reference solution scrolled
+sideways at 360 px: a single word cannot be wrapped, so it sticks out of the
+screen. Some pages hide the overflow instead (`overflow-x: hidden`), and
+then the end of the word is simply cut off. Neither is visible with the
+short English headline, which is exactly why you test with long content.
+
+**3.** At 400 % zoom, a 1280 px wide window behaves like a 320 px wide
+screen, and the accessibility guideline WCAG requires that a page still
+works then (*Reflow*). Typical findings: a sticky header that covers a third
+of the screen, and boxes with a fixed height that cut off their text.
+
+**4.** A phone held sideways is only about 320 – 400 px high. A sticky header
+plus the browser's own bars can leave just a narrow strip for the content.
+
+Precise prompts for these problems:
+
+| What you found | Precise prompt |
 |---|---|
-| Sideways scrolling | *"At 360 px width the page scrolls sideways. The console shows the `table` is too wide. Make it fit without horizontal scrolling."* |
-| Navigation links squeezed into one row | *"Below 768 px, hide the navigation behind a menu button with `aria-expanded`, and show the links stacked."* |
-| Three cards side by side, very narrow | *"Show the feature cards in one column on phones and in three columns from 768 px."* |
-| Tiny buttons | *"Make all buttons and navigation links at least 44 × 44 px to tap."* |
+| Navigation missing on phones | *"Below 900 px the navigation disappears. Show a menu button instead that opens and closes the links, with `aria-expanded`."* |
+| Long word scrolls sideways | *"At 360 px, a long word in the h1 makes the page scroll sideways. Let headings break long words with `overflow-wrap: anywhere` and `hyphens: auto`."* |
+| Header covers too much when zoomed or sideways | *"The sticky header takes up a third of the screen at 400 % zoom and on phones held sideways. Make it scroll away normally when the window is lower than 500 px."* |
+| Text cut off in a box | *"At 400 % zoom, the text in the hero box is cut off. Remove fixed heights so boxes grow with their content."* |
 
 **Key points:**
+- Responsive design is not only about screen widths. Content length, text
+  size and zoom change the layout just as much.
+- The AI builds for the content it was given. When the content changes
+  (another language, longer service names, a new price list), test again.
 - The device toolbar is a good approximation, but test on a **real phone**
   before going live. Touch, font sizes and browser bars behave differently.
-- WCAG 2.2 requires touch targets of at least 24 × 24 px. 44 × 44 px is the
-  comfortable size recommended by Apple and others.
 - Giving the **width**, the **element** and the **expected behaviour** turns
   a vague complaint into a request the AI can solve in one go.
 
@@ -760,38 +807,134 @@ for many online shops and services since June 2025.
 **Lighthouse** is a free audit built into Chrome and Edge. It checks
 performance, accessibility, best practices and search engine basics.
 
+If your prompt in Task 2 asked for accessibility, your page may already
+score 100. That is good news, but what exactly does a 100 prove? This task
+finds out with a test page that has known problems.
+
 **Your task:**
 
-**1.** Open `index.html`, open DevTools, choose the **Lighthouse** tab
-(behind `»` if hidden). Select *Mode: Navigation*, *Device: Mobile*, all
-categories, and click **Analyze page load**. Write down the four scores and
-every failed audit under *Accessibility*.
+**1. Audit your page.** Lighthouse only audits pages that come from a
+**web server**, with an address starting with `http://` or `https://`. A
+file opened by double-clicking has an address starting with `file://`, and
+Lighthouse refuses it. So start a small web server on your own computer
+first:
 
-> If Lighthouse will not run on a file opened from your disk, do steps 1–3
-> of Task 8 first and audit the published page instead.
+1. In VS Code, right-click `index.html` and choose **Open with Live
+   Server**. Your browser opens the page at an address like
+   `http://127.0.0.1:5500/index.html`.
 
-**2.** **Keyboard test.** Click into the address bar, then press `Tab`
-repeatedly through the whole page.
+   No such menu item? Then the extension is missing. Click the
+   *Extensions* icon on the left of VS Code (four squares), search for
+   `Live Server`, pick the one by **Ritwick Dey**, and click **Install**.
+   Then try the right-click again.
+2. If it opened in a browser other than Chrome or Edge, copy that address
+   into Chrome or Edge.
+3. Open DevTools there, choose the **Lighthouse** tab (behind `»` if
+   hidden). Select *Mode: Navigation*, *Device: Mobile*, all categories,
+   and click **Analyze page load**.
+4. Write down the **Accessibility** score and any failed audits. Then
+   scroll to *Additional items to manually check*. What does Lighthouse say
+   about them?
 
-1. Can you always see *where* you are (a visible focus outline)?
-2. Can you open the mobile menu and reach every link?
+**2. Audit a page with known problems.** Create a file `a11y-test.html`
+with the content below. It is a short Kurbelwerk page with **five**
+accessibility problems built in. Open it at
+`http://127.0.0.1:5500/a11y-test.html` and run Lighthouse again.
+
+<details>
+<summary>a11y-test.html: content to copy</summary>
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kurbelwerk — accessibility test page</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 40rem; margin: 2rem auto; padding: 0 1rem; color: #1c2321; }
+    .note { color: #9aa5a1; }
+    a { color: #1f6f5c; }
+    .button { display: inline-block; padding: 0.7rem 1.4rem; border-radius: 0.75rem; background: #1f6f5c; color: #ffffff; cursor: pointer; }
+    :focus-visible { outline: none; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="#services">Services</a> ·
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <main>
+    <h1>Kurbelwerk Bike Workshop</h1>
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 80'%3E%3Ccircle cx='40' cy='50' r='25' fill='none' stroke='%231f6f5c' stroke-width='6'/%3E%3Ccircle cx='160' cy='50' r='25' fill='none' stroke='%231f6f5c' stroke-width='6'/%3E%3Cpath d='M40 50 L80 15 L130 15 L160 50' fill='none' stroke='%231f6f5c' stroke-width='6'/%3E%3C/svg%3E" width="200" height="80">
+    <p>Honest repairs in Musterstadt, and flat tyres fixed the same day.</p>
+    <div class="button" onclick="location.href='tel:+491234567890'">Call to book a repair</div>
+
+    <h2 id="services">Services</h2>
+    <p>Safety check € 39 · Full service € 89 · Flat tyre repair € 15 plus tube</p>
+    <p class="note">All prices include VAT.</p>
+
+    <h2 id="contact">Contact</h2>
+    <p>Mühlgasse 7, 12345 Musterstadt · <a href="mailto:hallo@kurbelwerk.example">hallo@kurbelwerk.example</a></p>
+  </main>
+</body>
+</html>
+```
+
+</details>
+
+1. What score does it get, and which problems does Lighthouse report?
+2. Read the code. Can you find the problems Lighthouse did **not** report?
+   Hint: try to reach the *Call to book a repair* button with the `Tab` key.
+
+**3. Keyboard test.** On both pages, click into the address bar, then
+press `Tab` repeatedly through the whole page.
+
+1. Can you always see *where* you are?
+2. Can you reach every link and button?
 3. Does the first `Tab` offer a "Skip to content" link?
 
-**3.** Send the findings to the chatbot as a list, for example: *"Lighthouse
-reports: 'Background and foreground colors do not have a sufficient
-contrast ratio' for the footer links, and there is no visible focus outline
-on the navigation links. Fix only these two problems."*
-
-**4.** Run Lighthouse again. Did the score go up?
+**4. Your own page.** Did the keyboard test or the manual checklist from
+step 1 find anything on `index.html`? If so, describe it to the chatbot
+precisely, e.g. *"When I press Tab, the focus outline is invisible on the
+dark footer. Make it visible there. Change nothing else."* If not, your
+rules from Task 2 did their job.
 
 <details>
 <summary>Solution</summary>
 
-Common Lighthouse findings on AI-generated pages and what they mean:
+**1.** A page built with the Task 2 template often scores 90 – 100. Under
+*Additional items to manually check*, Lighthouse itself lists about ten
+points it **cannot** test, such as a logical tab order, focus that does not
+get trapped, and controls that announce their purpose. It says so plainly:
+automatic detection can only find a subset of issues.
+
+**2.** The test page scores about **65**, with three failed audits. Two
+of the five problems are not reported at all:
+
+| Problem in `a11y-test.html` | Found by Lighthouse? |
+|---|---|
+| `.note` text in light grey `#9aa5a1` (2.5:1) | **Yes:** *Background and foreground colors do not have a sufficient contrast ratio* |
+| `<html>` without `lang` | **Yes:** *`<html>` element does not have a `[lang]` attribute*. Screen readers then guess the language, and may read English text with German pronunciation |
+| `<img>` without `alt` | **Yes:** *Image elements do not have `[alt]` attributes* |
+| `:focus-visible { outline: none; }` | **No.** Keyboard users cannot see where they are |
+| The "button" is a `<div>` with `onclick` | **No.** It cannot be reached with `Tab` or pressed with `Enter`, and screen readers do not announce it as a button |
+
+The two problems Lighthouse missed are the worst ones: because of them,
+keyboard users cannot book a repair at all. **The score does not
+tell you how bad a problem is.** The fix for the button is to use a real
+link, `<a class="button" href="tel:+491234567890">`, or a `<button>`.
+
+**3.** On `a11y-test.html` you lose track after the first `Tab`: the
+focus is somewhere, but invisible, and the booking button is skipped. On
+`index.html` you should see a clear outline on every link and button. A
+skip link lets keyboard users jump past the navigation.
+
+Other common Lighthouse findings on AI-generated pages:
 
 | Lighthouse says | Meaning | Fix |
 |---|---|---|
-| *Background and foreground colors do not have a sufficient contrast ratio* | Text too light on its background | Use a token pair with ≥ 4.5:1 (Task 4) |
 | *Image elements do not have `[alt]` attributes* | Screen readers cannot describe the image | Add `alt` text, or `alt=""` for pure decoration |
 | *Links do not have a discernible name* | An icon-only link, e.g. a social media icon | Add visible text or an `aria-label` |
 | *Heading elements are not in a sequentially-descending order* | E.g. `h2` followed by `h4` | Use heading levels as an outline, not for font size |
@@ -802,16 +945,18 @@ in one short sentence. *"Mechanic adjusting the brakes of a city bike"* is
 good. *"Image of bike"* is weak, and the file name is useless. A logo next
 to the business name, or a purely decorative pattern, gets `alt=""`.
 
-**Keyboard:** without a visible focus outline, keyboard users are lost. A
-skip link lets them jump past the navigation on every page. The reference
-solution [site/index.html](site/index.html) has both.
-
 **Key points:**
-- A Lighthouse score of 100 does **not** mean a page is accessible.
-  Automatic tests only catch part of the problems. Whether alt text is
-  *meaningful* or the order makes sense needs a human.
+- Lighthouse checks what can be **measured** in the code: colours,
+  attributes, labels. Whether a page is **usable** needs a person with a
+  keyboard, and ideally a screen reader (VoiceOver on macOS and iOS,
+  Narrator on Windows, TalkBack on Android).
+- `file://` means "read this file from my disk", `http://` means "ask a web
+  server for it". Real visitors always get your page from a web server, so
+  testing with Live Server is closer to reality. A bonus: Live Server
+  reloads the page by itself every time you save, so you no longer need to
+  press `F5`. Stop it with **Port: 5500** in the blue status bar of VS Code.
 - Fixing accessibility usually improves the page for everybody: better
-  contrast helps in sunlight, larger buttons help on a bumpy bus.
+  contrast helps in sunlight, a visible focus helps anyone using a keyboard.
 - *Performance* is usually high for single-file pages. Large photos are the
   main reason it drops: compress them (e.g. with
   [Squoosh](https://squoosh.app)) and use the WebP format.
