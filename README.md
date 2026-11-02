@@ -59,6 +59,15 @@ the solution to compare.
 | 1:20 – 1:30 | Going live on GitHub Pages and the pre-flight checklist |
 | Optional | An automatic check in Python, AI inside the editor |
 
+### Follow-Up: Web Design with GitHub Copilot
+**Workshop:** [COPILOT_WEBDESIGN.md](COPILOT_WEBDESIGN.md)
+
+60 minutes, after the main workshop. Participants use Copilot agent mode in
+VS Code and write prompts that make the AI render the page in a real browser
+(Playwright MCP), check it against acceptance criteria, compare it with the
+business brief, and show evidence before it says "done". Needs a free
+Copilot plan and Node.js.
+
 The business in all examples, *Kurbelwerk* in *Musterstadt*, is invented.
 `site/index.html` uses no external fonts, scripts or images, and is marked
 `noindex` so a published copy does not show up in search engines.
